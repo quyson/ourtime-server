@@ -1,4 +1,5 @@
-using ourTime_server
+using ourTime_server;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 app.UseCors("AllowReactApp");
 
+app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

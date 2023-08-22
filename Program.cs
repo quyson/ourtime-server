@@ -5,16 +5,17 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using ourTime_server.DBContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.SqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddMvc();
 
 builder.Services.AddCors(options =>
 {
@@ -28,6 +29,11 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 builder.Services.AddScoped<ApplicationDbContext>();
 
 var app = builder.Build();
@@ -39,22 +45,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var configuration = services.GetRequiredService<IConfiguration>();
-
-    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-    optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-
-    using var dbContext = new ApplicationDbContext(optionsBuilder.Options, configuration);
-
-    // Perform any database initialization or seeding here
-
-    // Ensure the database is created/updated
-    dbContext.Database.EnsureCreated();
-}
 
 app.UseEndpoints(endpoints =>
 {

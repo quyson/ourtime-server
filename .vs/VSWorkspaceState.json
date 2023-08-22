@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Controllers"
+    "\\Controllers",
+    "\\DBContext",
+    "\\Models"
   ],
   "SelectedNode": "\\ourTime-server.sln",
   "PreviewInSolutionExplorer": false

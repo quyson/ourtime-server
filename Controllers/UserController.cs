@@ -1,11 +1,12 @@
 ﻿using ourTime_server.Models;
 using System.Threading.Tasks;
 using ourTime_server.DBContext;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ourTime_server.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -15,46 +16,16 @@ namespace ourTime_server.Controllers
             _context = context;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegistrationModel model)
+        [HttpPost("testing")]
+        public void /*Task<IActionResult>*/ Testing(string user)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            return (model);
-            /*var newUser = new User
-            {
-                Username = model.Username,
-                Email = model.Email,
-                // You should hash and salt the password before storing it
-                Password = HashAndSaltPassword(model.Password),
-            };
-
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Message = "Registration successful" });*/
+            Console.WriteLine(user);
         }
 
-        [HttpPost("login")]
-        public IActionResult GetUserProfile(string username)
+        [HttpGet("yo")]
+        public string Yo()
         {
-            var user = _context.Users.FirstOrDefault(u => u.Username == username);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            // Return user profile data
-            return Ok(user);
-        }
-
-        // Hash and salt password using a secure hashing algorithm (e.g., bcrypt)
-        private string HashAndSaltPassword(string password)
-        {
-            // Implement your password hashing logic here
+            return("Hello");
         }
     }
 }

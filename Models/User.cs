@@ -4,6 +4,7 @@ namespace ourTime_server.Models
 {
     public class User
     {
+        [Required]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Username is required")]
@@ -15,6 +16,5 @@ namespace ourTime_server.Models
 
         [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be between 8 and 100 characters")]
         public string Password { get; set; } = "";
-
     }
 }

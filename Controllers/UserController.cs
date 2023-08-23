@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ourTime_server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -16,13 +16,14 @@ namespace ourTime_server.Controllers
             _context = context;
         }
 
-        [HttpPost("testing")]
-        public void /*Task<IActionResult>*/ Testing(string user)
+        [HttpGet]
+        public void /*Task<IActionResult>*/ Testing()
         {
-            Console.WriteLine(user);
+            Console.WriteLine("what the hell bro!");
         }
 
-        [HttpGet("yo")]
+        [HttpGet]
+        [Route("yo")]
         public string Yo()
         {
             return("Hello");

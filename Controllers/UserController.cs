@@ -1,34 +1,21 @@
-﻿using ourTime_server.Models;
-using System.Threading.Tasks;
-using ourTime_server.DBContext;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ourTime_server.Controllers
 {
+    [Route("[controller]")]
     [ApiController]
-    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-
-        public UserController(ApplicationDbContext context)
+        [HttpGet]
+        public string Test()
         {
-            _context = context;
+            return ("Hello");
         }
 
-        [HttpGet]
-        public void /*Task<IActionResult>*/ Testing()
+        [HttpGet("LOL")]
+        public string Lol()
         {
-            Console.WriteLine("what the hell bro!");
-        }
-
-        [HttpGet]
-        [Route("yo")]
-        public string Yo()
-        {
-            return("Hello");
+            return ("LOL");
         }
     }
 }
-
-

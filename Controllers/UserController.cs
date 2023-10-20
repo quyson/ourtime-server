@@ -24,10 +24,13 @@ namespace ourTime_server.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(User user)
+        public ActionResult<User> Login(UserDto request)
         {
-            Console.WriteLine("LOGGED IN", user);
-            return (Ok());
+            if(user.Username != request.Username || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)
+            {
+                return BadRequest("Username is not found or Password is wrong!")
+            }
+            return Ok(user);
         }
     }
 }

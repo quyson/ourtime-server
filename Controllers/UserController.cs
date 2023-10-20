@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ourTime_server.Models;
 
 namespace ourTime_server.Controllers
 {
@@ -6,16 +7,27 @@ namespace ourTime_server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpGet]
-        public string Test()
+        public static User user = new User();
+
+        [HttpPost("register")]
+        public ActionResult<User> Register(UserDto request)
         {
-            return ("Hello");
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+            user.Username = request.Username;
+            user.Email = request.Email;
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.PasswordHash = passwordHash;
+
+            return Ok(user);
         }
 
-        [HttpGet("LOL")]
-        public string Lol()
+        [HttpPost("login")]
+        public IActionResult Login(User user)
         {
-            return ("LOL");
+            Console.WriteLine("LOGGED IN", user);
+            return (Ok());
         }
     }
 }

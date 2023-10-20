@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "sIKZcSWmLTxrNNn0bLIazBuIhBdifSJ2b5LaBzVMfnb0yv/px3CzQqPoFtAwqeClaBeQal3XUfixyoVR+m8PNg==",
+  "dgSpecHash": "5nauTUSjIKvye61GaendswEOqb+S1LYcfCFOknKQD7DGzLU3QXWjDGht8IIP3ykIrHSGY3qVxLEZgKRv53mlYA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Quyson\\Desktop\\computer\\dotnet repos\\ourTime-server\\ourTime-server.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Quyson\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Quyson\\.nuget\\packages\\jquery\\1.6.4\\jquery.1.6.4.nupkg.sha512",
     "C:\\Users\\Quyson\\.nuget\\packages\\microsoft.aspnet.signalr\\2.4.3\\microsoft.aspnet.signalr.2.4.3.nupkg.sha512",
     "C:\\Users\\Quyson\\.nuget\\packages\\microsoft.aspnet.signalr.core\\2.4.3\\microsoft.aspnet.signalr.core.2.4.3.nupkg.sha512",

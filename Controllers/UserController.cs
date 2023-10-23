@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using ourTime_server.Models;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ourTime_server.Controllers
 {
@@ -42,6 +43,7 @@ namespace ourTime_server.Controllers
                 return BadRequest("Username is not found or Password is wrong!");
             };
 
+            
             string token = CreateToken(user);
 
             return Ok(token);
@@ -53,8 +55,9 @@ namespace ourTime_server.Controllers
             { 
                 new Claim(ClaimTypes.Name, user.Username)
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings: Token").Value!));
-
+            
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
+       
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
@@ -66,6 +69,14 @@ namespace ourTime_server.Controllers
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;
+        }
+
+        [HttpGet("test")]
+        [Authorize]
+        public string Test()
+        {
+            Console.WriteLine("It works backend");
+            return ("It works");
         }
     }
 }

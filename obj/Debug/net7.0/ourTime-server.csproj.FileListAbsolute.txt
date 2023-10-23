@@ -45,3 +45,4 @@ C:\Users\Quyson\Desktop\computer\dotnet repos\ourTime-server\bin\Debug\net7.0\Mi
 C:\Users\Quyson\Desktop\computer\dotnet repos\ourTime-server\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Quyson\Desktop\computer\dotnet repos\ourTime-server\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\Quyson\Desktop\computer\dotnet repos\ourTime-server\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Quyson\Desktop\computer\dotnet repos\ourTime-server\bin\Debug\net7.0\BCrypt.Net-Next.dll

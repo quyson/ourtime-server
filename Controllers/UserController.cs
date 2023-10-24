@@ -5,6 +5,7 @@ using ourTime_server.Models;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using ourTime_server.Services;
 
 namespace ourTime_server.Controllers
 {
@@ -13,12 +14,20 @@ namespace ourTime_server.Controllers
     public class UserController : ControllerBase
     {
         public static User user = new User();
-
         private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
 
-        public UserController(IConfiguration configuration)
+        public UserController(IConfiguration configuration, IUserService userService)
         {
             _configuration = configuration;
+            _userService = userService;
+        }
+
+        [HttpGet("name")]
+        [Authorize]
+        public ActionResult<string> GetMyName()
+        {
+            return Ok(_userService.GetMyName());
         }
 
         [HttpPost("register")]

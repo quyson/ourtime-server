@@ -5,7 +5,7 @@ using ourTime_server.Models;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using ourTime_server.Services;
+using ourTime_server.Services;   
 
 namespace ourTime_server.Controllers
 {
@@ -13,13 +13,11 @@ namespace ourTime_server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        public static User user = new User();
-        private readonly IConfiguration _configuration;
+        
         private readonly IUserService _userService;
 
-        public UserController(IConfiguration configuration, IUserService userService)
+        public UserController(IUserService userService)
         {
-            _configuration = configuration;
             _userService = userService;
         }
 
@@ -33,59 +31,23 @@ namespace ourTime_server.Controllers
         [HttpPost("register")]
         public ActionResult<User> Register(UserDto request)
         {
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-            user.Username = request.Username;
-            user.Email = request.Email;
-            user.FirstName = request.FirstName;
-            user.LastName = request.LastName;
-            user.PasswordHash = passwordHash;
-
-            return Ok(user);
+            return Ok(_userService.Register(request));
         }
 
         [HttpPost("login")]
-        public ActionResult<User> Login(UserDto request)
+        public ActionResult<String> Login(UserDto request)
         {
-            if(user.Username != request.Username || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)
-            ){
+            var token = _userService.Login(request);
+            if(token == "Error")
+            {
                 return BadRequest("Username is not found or Password is wrong!");
-            };
-
-            
-            string token = CreateToken(user);
-
+            }
             return Ok(token);
         }
 
-        private string CreateToken(User user)
+        /*private string CreateToken(User user)
         {
-            List<Claim> claims = new List<Claim>
-            { 
-                new Claim(ClaimTypes.Name, user.Username)
-            };
-            
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
-       
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var token = new JwtSecurityToken(
-                    claims: claims,
-                    expires: DateTime.Now.AddDays(1),
-                    signingCredentials: cred
-             );
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
-        }
-
-        [HttpGet("test")]
-        [Authorize]
-        public string Test()
-        {
-            Console.WriteLine("It works backend");
-            return ("It works");
-        }
+            return _userService.CreateToken(user);
+        }*/
     }
 }

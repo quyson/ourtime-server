@@ -19,5 +19,7 @@ namespace ourTime_server.Services
         Task<ActionResult<string>> Register(UserDto user);
 
         Task<string> DeleteUser(int id);
+
+        Task<string> UpdateUser(UserDto request);
     }
 }

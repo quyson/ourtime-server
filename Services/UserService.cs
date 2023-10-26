@@ -85,6 +85,27 @@ namespace ourTime_server.Services
             return ("User has been deleted!");
         }
 
+        public async Task<string> UpdateUser(UserDto request)
+        {
+            var result = _HttpContextAccessor.HttpContext.User?.Identity?.Name;
+            Console.WriteLine(result);
+            var user = await _context.Users.Where(_ => _.Username == result).FirstOrDefaultAsync();
+
+            if(user == null)
+            {
+                return ("User not found!");
+            }
+
+            user.Username = request.Username;
+            user.Email = request.Email;
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+
+            await _context.SaveChangesAsync();
+
+            return ("User Updated!");
+        }
+
         public string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>

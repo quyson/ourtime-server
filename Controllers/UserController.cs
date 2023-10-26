@@ -62,5 +62,18 @@ namespace ourTime_server.Controllers
             }
             return Ok(result);
         }
+
+        [HttpPut("update")]
+        public async Task<ActionResult<string>> UpdateUser(UserDto request)
+        {
+
+            var result = await _userService.UpdateUser(request);
+
+            if (result == "User not found!")
+            {
+                return BadRequest("User not found!");
+            }
+            return Ok(result);
+        }
     }
 }

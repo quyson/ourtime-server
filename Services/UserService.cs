@@ -9,6 +9,9 @@ using ourTime_server.Services;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNet.SignalR;
+using ourTime_server.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace ourTime_server.Services
 {
@@ -16,12 +19,13 @@ namespace ourTime_server.Services
     {
         private readonly IHttpContextAccessor _HttpContextAccessor;
         private readonly IConfiguration _configuration;
-        public static User user = new User();
+        private readonly DataContext _context;
 
-        public UserService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public UserService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, DataContext context)
         {
             _configuration = configuration;
             _HttpContextAccessor = httpContextAccessor;
+            _context = context;
         }
         public string GetMyName()
         {
@@ -34,20 +38,33 @@ namespace ourTime_server.Services
             return result;
         }
 
-        public ActionResult<User> Register(UserDto request)
+        public async Task<ActionResult<string>> Register(UserDto request)
         {
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            var user = new User();
 
             user.Username = request.Username;
             user.Email = request.Email;
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.PasswordHash = passwordHash;
-            return user;
+            
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            Console.WriteLine(_context.Database.GetDbConnection().ConnectionString);
+
+            return ("User Created!");
         }
 
-        public string Login(UserDto request) 
+        public async Task<string> Login(UserDto request) 
         {
+            var user = await _context.Users.Where(b => b.Username == request.Username).FirstOrDefaultAsync();
+            Console.WriteLine(user);
+            if(user == null)
+            {
+                return ("User not found!");
+            }
             if (user.Username != request.Username || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)
             )
             {

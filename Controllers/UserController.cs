@@ -29,18 +29,23 @@ namespace ourTime_server.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult<User> Register(UserDto request)
+        public async Task<ActionResult<string>> Register(UserDto request)
         {
-            return Ok(_userService.Register(request));
+            var result = await _userService.Register(request);
+            return Ok(result);
         }
 
         [HttpPost("login")]
-        public ActionResult<String> Login(UserDto request)
+        public async Task<ActionResult<string>> Login(UserDto request)
         {
-            var token = _userService.Login(request);
+            var token = await _userService.Login(request);
             if(token == "Error")
             {
                 return BadRequest("Username is not found or Password is wrong!");
+            }
+            if(token == "User not found!")
+            {
+                return BadRequest("User not found!");
             }
             return Ok(token);
         }

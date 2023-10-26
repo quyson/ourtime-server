@@ -14,8 +14,8 @@ namespace ourTime_server.Services
     {
         string GetMyName();
         //string CreateToken(User user);
-        string Login(UserDto user);
+        Task<string> Login(UserDto user);
 
-        ActionResult<User> Register(UserDto user);
+        Task<ActionResult<string>> Register(UserDto user);
     }
 }

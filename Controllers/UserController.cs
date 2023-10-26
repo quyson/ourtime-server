@@ -50,9 +50,17 @@ namespace ourTime_server.Controllers
             return Ok(token);
         }
 
-        /*private string CreateToken(User user)
+        [HttpDelete("delete")]
+        public async Task<ActionResult<string>> DeleteUser(int id)
         {
-            return _userService.CreateToken(user);
-        }*/
+
+            var result = await _userService.DeleteUser(id);
+
+            if(result == "User not found!")
+            {
+                return BadRequest("User not found!");
+            }
+            return Ok(result);
+        }
     }
 }

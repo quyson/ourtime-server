@@ -17,5 +17,7 @@ namespace ourTime_server.Services
         Task<string> Login(UserDto user);
 
         Task<ActionResult<string>> Register(UserDto user);
+
+        Task<string> DeleteUser(int id);
     }
 }

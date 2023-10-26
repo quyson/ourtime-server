@@ -12,6 +12,7 @@ using Microsoft.AspNet.SignalR;
 using ourTime_server.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Azure.Core;
 
 namespace ourTime_server.Services
 {
@@ -52,8 +53,6 @@ namespace ourTime_server.Services
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            Console.WriteLine(_context.Database.GetDbConnection().ConnectionString);
-
             return ("User Created!");
         }
 
@@ -72,6 +71,18 @@ namespace ourTime_server.Services
             };
             string token = CreateToken(user);
             return(token);
+        }
+
+        public async Task<string> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if(user == null)
+            {
+                return ("User not found!");
+            }
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return ("User has been deleted!");
         }
 
         public string CreateToken(User user)

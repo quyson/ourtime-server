@@ -28,5 +28,11 @@ namespace ourTime_server
             await Clients.Client(connectionId).SendAsync("ReceiveAnswer", Context.ConnectionId, sdpAnswer, username);
             Console.WriteLine($"sent {username}'s SDPAnswer back to {connectionId}");
         }
+
+        public async Task SendIceCandidate(string  connectionId, string candidate)
+        {
+            await Clients.Client(connectionId).SendAsync("ReceiveIceCandidate", candidate);
+            Console.WriteLine($"Sent Ice Candidate!");
+        }
     }
 }

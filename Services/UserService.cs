@@ -30,6 +30,7 @@ namespace ourTime_server.Services
         }
         public string GetMyName()
         {
+
             var result = String.Empty;
             if(_HttpContextAccessor.HttpContext != null)
             {

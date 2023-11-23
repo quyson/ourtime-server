@@ -16,9 +16,6 @@ namespace ourTime_server
 
         public async Task Offer(string connectionId, string sdpOffer, string username)
         {
-            Console.WriteLine(sdpOffer);
-            Console.WriteLine(username);
-
             await Clients.Client(connectionId).SendAsync("ReceiveOffer", Context.ConnectionId, sdpOffer, username);
             Console.WriteLine($"sent {username}'s SDPOffer to {connectionId}");
         }
@@ -29,10 +26,20 @@ namespace ourTime_server
             Console.WriteLine($"sent {username}'s SDPAnswer back to {connectionId}");
         }
 
-        public async Task SendIceCandidate(string  connectionId, string candidate)
+        public async Task SendIceCandidate(string connectionId, string username, string candidate)
         {
             await Clients.Client(connectionId).SendAsync("ReceiveIceCandidate", candidate);
-            Console.WriteLine($"Sent Ice Candidate!");
+            Console.WriteLine($"{username} sent Ice Candidate {candidate} to {connectionId}!");
+        }
+        public async Task Decline(string peerId)
+        {
+            await Clients.Client(peerId).SendAsync("Declined");
+            Console.WriteLine($"Declined Call");
+        }
+        public async Task Disconnect(string peerId)
+        {
+            await Clients.Client(peerId).SendAsync("Disconnected");
+            Console.WriteLine($"Disconnected!");
         }
     }
 }

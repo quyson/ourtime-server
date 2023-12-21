@@ -8,23 +8,16 @@ namespace ourTime_server
 {
     public class WebRTC : Hub
     {
-        public class CallInformation
-        {
-            public string UserToCall { get; set; }
-            public string SignalData { get; set; }
-            public string From { get; set; }
-
-        }
         public override Task OnConnectedAsync()
         {
             Console.WriteLine($"New Connection {Context.ConnectionId}");
             return base.OnConnectedAsync();
         }
 
-        public async Task CallUser(CallInformation callInformation)
+        public async Task CallUser(string userToCall, string signalData, string from)
         {
-            await Clients.Client(callInformation.UserToCall).SendAsync("IncomingCall", Context.ConnectionId, callInformation.SignalData);
-            Console.WriteLine($"calling {callInformation.UserToCall}");
+            await Clients.Client(userToCall).SendAsync("IncomingCall", from, signalData);
+            Console.WriteLine($"calling {userToCall}");
         }
 
         public async Task AcceptCaller(string data, string caller)

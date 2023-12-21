@@ -8,38 +8,36 @@ namespace ourTime_server
 {
     public class WebRTC : Hub
     {
+        public class CallInformation
+        {
+            public string UserToCall { get; set; }
+            public string SignalData { get; set; }
+            public string From { get; set; }
+
+        }
         public override Task OnConnectedAsync()
         {
             Console.WriteLine($"New Connection {Context.ConnectionId}");
             return base.OnConnectedAsync();
         }
 
-        public async Task Offer(string connectionId, string sdpOffer, string username)
+        public async Task CallUser(CallInformation callInformation)
         {
-            await Clients.Client(connectionId).SendAsync("ReceiveOffer", Context.ConnectionId, sdpOffer, username);
-            Console.WriteLine($"sent {username}'s SDPOffer to {connectionId}");
+            await Clients.Client(callInformation.UserToCall).SendAsync("IncomingCall", Context.ConnectionId, callInformation.SignalData);
+            Console.WriteLine($"calling {callInformation.UserToCall}");
         }
 
-        public async Task Answer(string connectionId, string sdpAnswer, string username)
+        public async Task AcceptCaller(string data, string caller)
         {
-            await Clients.Client(connectionId).SendAsync("ReceiveAnswer", Context.ConnectionId, sdpAnswer, username);
-            Console.WriteLine($"sent {username}'s SDPAnswer back to {connectionId}");
+            await Clients.Client(caller).SendAsync("CallAccepted", data);
+            Console.WriteLine($"Accepted Call");
         }
 
-        public async Task SendIceCandidate(string connectionId, string username, string candidate)
+        public async Task SendMessage(string username, string message)
         {
-            await Clients.Client(connectionId).SendAsync("ReceiveIceCandidate", candidate);
-            Console.WriteLine($"{username} sent Ice Candidate {candidate} to {connectionId}!");
+            await Clients.All.SendAsync("NewMessage", username, message);
+            Console.WriteLine($"sent {message}");
         }
-        public async Task Decline(string peerId)
-        {
-            await Clients.Client(peerId).SendAsync("Declined");
-            Console.WriteLine($"Declined Call");
-        }
-        public async Task Disconnect(string peerId)
-        {
-            await Clients.Client(peerId).SendAsync("Disconnected");
-            Console.WriteLine($"Disconnected!");
-        }
+       
     }
 }

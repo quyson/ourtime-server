@@ -1,6 +1,9 @@
 # OurTime-Server
 The OurTime Server project is a comprehensive backend service built using ASP.NET Core. It provides user authentication and management, as well as real-time communication through SignalR for web-based applications. The project includes features for user registration, login, updating user information, and deleting user accounts. Additionally, it incorporates a SignalR hub (WebRTC) for handling real-time communication tasks such as initiating and accepting calls, as well as sending messages.
 
+### Client Repo Link:
+https://github.com/quyson/ourtime-client
+
 ## Application Structure
 The configuration for the OurTime Server project involves setting up CORS (Cross-Origin Resource Sharing) policies to allow communication with specific origins, configuring SignalR, adding authentication middleware for JWT (JSON Web Token), and establishing a database connection using Entity Framework Core.
 
